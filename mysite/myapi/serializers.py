@@ -2,19 +2,22 @@
 from rest_framework import serializers
 
 from .models import Wishlists
-from rest_framework import serializers
+from .models import Books
+from .models import Genres
 
-from .models import Users
-from .models import Creditcards
-
-
-class UsersSerializer(serializers.ModelSerializer):
+class WishlistsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = '__all__'
-
-
-class CreditcardsSerializer(serializers.ModelSerializer):
+        model = Wishlists
+        fields = ('userid', 'bookid', 'name')
+             
+class BooksSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Creditcards
-        fields = '__all__'
+        model = Books
+        fields = ('id', 'isbn', 'authorid', 'genreid', 'name', 'description', 'price', 'publisher', 'yearpublished', 'copiessold')
+        
+class GenresSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genres
+        fields = ('id', 'genre')
+
+
