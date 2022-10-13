@@ -90,7 +90,7 @@ class Genres(models.Model):
 class Purchasedbooks(models.Model):
     orderhistory = models.AutoField(db_column='orderHistory', primary_key=True)  # Field name made lowercase.
     userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
-    bookid = models.ForeignKey(Books, models.DO_NOTHING, db_column='BookID')  # Field name made lowercase.
+    bookid = models.ForeignKey('Books', models.DO_NOTHING, db_column='BookID')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -100,7 +100,7 @@ class Purchasedbooks(models.Model):
 class Shoppingcarts(models.Model):
     ordernumber = models.AutoField(db_column='orderNumber', primary_key=True)  # Field name made lowercase.
     userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
-    bookid = models.ForeignKey(Books, models.DO_NOTHING, db_column='BookID')  # Field name made lowercase.
+    bookid = models.ForeignKey('Books', models.DO_NOTHING, db_column='BookID')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -120,15 +120,17 @@ class Users(models.Model):
 
 
 class Wishlists(models.Model):
-    userid = models.OneToOneField(Users, models.DO_NOTHING, db_column='UserID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    userid = models.ForeignKey(Users, models.DO_NOTHING, db_column='UserID')  # Field name made lowercase.
     bookid = models.ForeignKey(Books, models.DO_NOTHING, db_column='BookID')  # Field name made lowercase.
-    name = models.TextField(unique=True)
+    name = models.TextField()
 
     class Meta:
         managed = False
         db_table = 'WishLists'
-
-
+        constraints = [models.UniqueConstraint(fields = ['bookid', 'userid', 'name'], name = 'constraint_userId_bookId_name')]
+        
+ 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
